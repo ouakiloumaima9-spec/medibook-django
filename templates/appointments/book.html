@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Réserver avec {{ doctor }}</h2>
+<form method="get" class="mb-card mb-4">
+  <label class="form-label">Choisir une date</label>
+  <input type="date" name="date" class="form-control" value="{{ selected_date|date:'Y-m-d' }}" min="{% now 'Y-m-d' %}" onchange="this.form.submit()">
+</form>
+<div class="mb-card">
+  <h5>Créneaux du {{ selected_date|date:"d M Y" }}</h5>
+  {% if slots %}
+  <form method="post" id="slot-form">
+    {% csrf_token %}
+    <div class="my-3">{% for slot in slots %}<button type="button" class="slot-btn {% if selected_time == slot|time:'H:i' %}selected{% endif %}" data-time="{{ slot|time:'H:i' }}">{{ slot|time:"H:i" }}</button>{% endfor %}</div>
+    <input type="hidden" name="selected_time" id="selected_time" value="{{ selected_time }}">
+    <div class="mb-3"><label class="form-label">Motif de consultation</label>{{ form.reason }}</div>
+    <button type="submit" class="btn btn-mb-primary" id="confirm-btn" {% if not selected_time %}disabled{% endif %}>Confirmer le rendez-vous</button>
+  </form>
+  {% else %}<p class="text-muted">Aucun créneau disponible pour cette date.</p>{% endif %}
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.querySelectorAll('.slot-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById('selected_time').value = btn.dataset.time;
+        document.getElementById('confirm-btn').disabled = false;
+    });
+});
+</script>
+{% endblock %}

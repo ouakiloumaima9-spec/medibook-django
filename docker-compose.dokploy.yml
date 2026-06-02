@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - dokploy-network
+
+  web:
+    image: omoumou/medibook:v3
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8024:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - dokploy-network
+
+volumes:
+  db_data:
+
+networks:
+  dokploy-network:
+    external: true

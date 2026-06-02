@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-hero text-center">
+    <h1>Prenez rendez-vous avec le bon médecin</h1>
+    <p class="lead mb-4">Recherchez un spécialiste, consultez ses disponibilités et réservez en quelques clics.</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'doctors:list' %}" class="btn btn-mb-primary btn-lg"><i class="bi bi-search"></i> Trouver un médecin</a>
+        <a href="{% url 'ai_orientation:orient' %}" class="btn btn-mb-outline btn-lg"><i class="bi bi-stars"></i> Assistant IA</a>
+    </div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="stat-card"><div class="stat-label">Médecins disponibles</div><div class="stat-value">{{ doctors_count }}</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="stat-label">Spécialités</div><div class="stat-value">{{ specialties_count }}</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="stat-label">Parcours</div><div class="stat-value">RDV</div></div></div>
+</div>
+<h3 class="mb-3">Nos spécialités</h3>
+<div class="row g-3">
+    {% for spe in featured_specialties %}
+    <div class="col-md-4 col-lg-2">
+        <a href="{% url 'doctors:list' %}?specialty={{ spe.id }}" class="specialty-card">
+            <div class="specialty-icon"><i class="bi {{ spe.icon }}"></i></div>
+            <div class="fw-semibold">{{ spe.name }}</div>
+        </a>
+    </div>
+    {% empty %}
+    <p class="text-muted">Aucune spécialité n’est encore disponible.</p>
+    {% endfor %}
+</div>
+{% endblock %}

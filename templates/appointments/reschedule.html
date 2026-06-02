@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Modifier le rendez-vous</h2>
+<form method="get" class="mb-card mb-4"><label class="form-label">Nouvelle date</label><input type="date" name="date" class="form-control" value="{{ selected_date|date:'Y-m-d' }}" min="{% now 'Y-m-d' %}" onchange="this.form.submit()"></form>
+<div class="mb-card"><h5>Créneaux disponibles</h5>{% if slots %}<form method="post" id="slot-form">{% csrf_token %}<div class="my-3">{% for slot in slots %}<button type="button" class="slot-btn" data-time="{{ slot|time:'H:i' }}">{{ slot|time:"H:i" }}</button>{% endfor %}</div><input type="hidden" name="selected_time" id="selected_time"><button class="btn btn-mb-primary" id="confirm-btn" disabled>Enregistrer la modification</button><a href="{% url 'appointments:detail' appointment.pk %}" class="btn btn-mb-outline">Annuler</a></form>{% else %}<p class="text-muted">Aucun créneau disponible.</p>{% endif %}</div>
+{% endblock %}
+{% block extra_js %}<script>document.querySelectorAll('.slot-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');document.getElementById('selected_time').value=btn.dataset.time;document.getElementById('confirm-btn').disabled=false;});});</script>{% endblock %}

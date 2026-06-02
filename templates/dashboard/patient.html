@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Bonjour {{ user.first_name|default:user.username }}</h2>
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="stat-card"><div class="stat-label">À venir</div><div class="stat-value">{{ upcoming_count }}</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="stat-label">Confirmés</div><div class="stat-value text-success">{{ confirmed_count }}</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="stat-label">Passés</div><div class="stat-value">{{ past_count }}</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="stat-label">Annulés</div><div class="stat-value text-danger">{{ cancelled_count }}</div></div></div>
+</div>
+{% if unread_notifications %}
+<div class="mb-card mb-4">
+    <h5 class="mb-3">Notifications importantes</h5>
+    {% for notif in unread_notifications %}<div class="border-bottom py-2"><strong>{{ notif.title }}</strong><div class="text-muted small">{{ notif.message }}</div></div>{% endfor %}
+</div>
+{% endif %}
+{% if next_appointment %}
+<div class="mb-card mb-4">
+    <div class="d-flex justify-content-between mb-3"><h5 class="mb-0">Prochain rendez-vous</h5><span class="badge {{ next_appointment.status_badge_class }}">{{ next_appointment.get_status_display }}</span></div>
+    <div class="d-flex align-items-center gap-3 flex-wrap">
+        <div class="doctor-avatar">{{ next_appointment.doctor.user.first_name|first }}{{ next_appointment.doctor.user.last_name|first }}</div>
+        <div class="flex-grow-1"><div class="fw-semibold">Dr. {{ next_appointment.doctor.user.get_full_name }}</div><div class="text-muted small">{{ next_appointment.specialty.name|default:"-" }}</div></div>
+        <div class="text-end"><div class="fw-semibold">{{ next_appointment.date|date:"d M Y" }}</div><div class="text-muted small">{{ next_appointment.time|time:"H:i" }}</div></div>
+        <a href="{% url 'appointments:detail' next_appointment.pk %}" class="btn btn-mb-outline btn-sm">Voir</a>
+    </div>
+</div>
+{% endif %}
+<div class="mb-card">
+    <h5 class="mb-3">Mes rendez-vous récents</h5>
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead><tr><th>Date</th><th>Médecin</th><th>Spécialité</th><th>Statut</th><th></th></tr></thead>
+            <tbody>
+            {% for a in recent_appointments %}
+            <tr>
+                <td>{{ a.date|date:"d/m/Y" }} {{ a.time|time:"H:i" }}</td>
+                <td>Dr. {{ a.doctor.user.get_full_name }}</td>
+                <td>{{ a.specialty.name|default:"-" }}</td>
+                <td><span class="badge {{ a.status_badge_class }}">{{ a.get_status_display }}</span></td>
+                <td><a href="{% url 'appointments:detail' a.pk %}" class="btn btn-sm btn-mb-outline">Voir</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-4">Aucun rendez-vous.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

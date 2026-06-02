@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="mb-card">
+      <h3 class="text-center mb-4">Connexion</h3>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="mb-3"><label class="form-label">Nom d'utilisateur</label>{{ form.username }}</div>
+        <div class="mb-3"><label class="form-label">Mot de passe</label>{{ form.password }}</div>
+        {% if form.errors %}<div class="alert alert-danger">Identifiants incorrects ou compte inactif.</div>{% endif %}
+        <button type="submit" class="btn btn-mb-primary w-100">Se connecter</button>
+      </form>
+      <div class="d-flex justify-content-between mt-3 small">
+        <a href="{% url 'accounts:signup' %}">Créer un compte patient</a>
+        <a href="{% url 'accounts:password_reset' %}">Mot de passe oublié ?</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

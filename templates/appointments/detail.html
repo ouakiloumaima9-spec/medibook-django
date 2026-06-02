@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-card">
+  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <h3 class="mb-3">Détail du rendez-vous</h3>
+    <span class="badge {{ appointment.status_badge_class }} fs-6">{{ appointment.get_status_display }}</span>
+  </div>
+  <p><strong>Patient :</strong> {{ appointment.patient.get_full_name|default:appointment.patient.username }}</p>
+  <p><strong>Médecin :</strong> {{ appointment.doctor }}</p>
+  <p><strong>Spécialité :</strong> {{ appointment.specialty.name|default:"-" }}</p>
+  <p><strong>Date :</strong> {{ appointment.date|date:"d/m/Y" }} à {{ appointment.time|time:"H:i" }}</p>
+  <p><strong>Motif :</strong> {{ appointment.reason }}</p>
+  {% if appointment.consultation %}<hr><h5>Résumé administratif</h5><p>{{ appointment.consultation.summary }}</p>{% endif %}
+  {% if appointment.review %}<hr><h5>Avis patient</h5><p><strong>{{ appointment.review.rating }}/5</strong> — {{ appointment.review.comment|default:"Aucun commentaire" }}</p>{% endif %}
+  <div class="d-flex gap-2 flex-wrap mt-3">
+    <a href="{% url 'appointments:my_appointments' %}" class="btn btn-mb-outline">Retour</a>
+    {% if can_reschedule %}<a href="{% url 'appointments:reschedule' appointment.pk %}" class="btn btn-mb-outline">Modifier</a>{% endif %}
+    {% if can_cancel %}<form method="post" action="{% url 'appointments:cancel' appointment.pk %}">{% csrf_token %}<button class="btn btn-danger" onclick="return confirm('Annuler ce rendez-vous ?')">Annuler</button></form>{% endif %}
+    {% if can_confirm %}<form method="post" action="{% url 'appointments:confirm' appointment.pk %}">{% csrf_token %}<button class="btn btn-success">Confirmer</button></form>{% endif %}
+    {% if can_complete %}<form method="post" action="{% url 'appointments:complete' appointment.pk %}">{% csrf_token %}<button class="btn btn-secondary">Terminer</button></form>{% endif %}
+    {% if can_no_show %}<form method="post" action="{% url 'appointments:no_show' appointment.pk %}">{% csrf_token %}<button class="btn btn-dark">Absent</button></form>{% endif %}
+    {% if can_add_consultation %}<a href="{% url 'appointments:consultation' appointment.pk %}" class="btn btn-mb-primary">Résumé administratif</a>{% endif %}
+    {% if can_review %}<a href="{% url 'appointments:review' appointment.pk %}" class="btn btn-mb-primary">Donner un avis</a>{% endif %}
+  </div>
+</div>
+{% endblock %}

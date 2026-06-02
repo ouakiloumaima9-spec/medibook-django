@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Tableau de bord médecin</h2>
+<div class="row g-3 mb-4">
+    <div class="col-md-2"><div class="stat-card"><div class="stat-label">Aujourd’hui</div><div class="stat-value">{{ today_count }}</div></div></div>
+    <div class="col-md-2"><div class="stat-card"><div class="stat-label">Semaine</div><div class="stat-value">{{ week_count }}</div></div></div>
+    <div class="col-md-2"><div class="stat-card"><div class="stat-label">Total</div><div class="stat-value">{{ total_count }}</div></div></div>
+    <div class="col-md-2"><div class="stat-card"><div class="stat-label">Confirmés</div><div class="stat-value text-success">{{ confirmed_count }}</div></div></div>
+    <div class="col-md-2"><div class="stat-card"><div class="stat-label">Annulés</div><div class="stat-value text-danger">{{ cancelled_count }}</div></div></div>
+    <div class="col-md-2"><div class="stat-card"><div class="stat-label">Patients</div><div class="stat-value">{{ unique_patients_count }}</div></div></div>
+</div>
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="mb-card mb-4">
+            <h5 class="mb-3">Rendez-vous du jour</h5>
+            {% include 'appointments/_appointment_table.html' with appointments=today_appointments compact=True %}
+        </div>
+        <div class="mb-card">
+            <h5 class="mb-3">Planning de la semaine</h5>
+            {% include 'appointments/_appointment_table.html' with appointments=week_appointments compact=True %}
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="mb-card">
+            <h5 class="mb-3">Disponibilités</h5>
+            {% for availability in availabilities %}
+            <div class="d-flex justify-content-between border-bottom py-2">
+                <span>{{ availability.get_weekday_display }}</span>
+                <span>{{ availability.start_time|time:"H:i" }} - {{ availability.end_time|time:"H:i" }}</span>
+            </div>
+            {% empty %}<p class="text-muted">Aucune disponibilité définie.</p>{% endfor %}
+            <a href="{% url 'schedules:manage' %}" class="btn btn-mb-primary w-100 mt-3">Gérer les disponibilités</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

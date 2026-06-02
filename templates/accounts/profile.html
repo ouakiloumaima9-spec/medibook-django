@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="mb-card">
+      <h3 class="mb-3">Mon profil</h3>
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ u_form|crispy }}
+        {% if p_form %}
+        <hr>
+        <h5>Informations patient</h5>
+        {{ p_form|crispy }}
+        {% endif %}
+        <button type="submit" class="btn btn-mb-primary">Enregistrer</button>
+        <a href="{% url 'dashboard:home' %}" class="btn btn-mb-outline">Retour</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
