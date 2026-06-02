@@ -71,13 +71,13 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: omoumou
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Tag and push Docker image
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         run: |
-          docker tag medibook:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/medibook2:latest
-          docker tag medibook:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/medibook2:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/medibook2:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/medibook2:${{ github.sha }}
+          docker tag medibook:${{ github.sha }} omoumou/medibook2:latest
+          docker tag medibook:${{ github.sha }} omoumou/medibook2:${{ github.sha }}
+          docker push omoumou/medibook2:latest
+          docker push omoumou/medibook2:${{ github.sha }}
