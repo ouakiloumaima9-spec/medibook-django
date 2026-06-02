@@ -16,7 +16,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-9">
       <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
+        <div class="card-header d-flex align-items-center gap-2" style="background:var(--mb-primary);color:#fff;"></div>
           <i class="bi bi-pencil-square fs-5"></i>
           <h5 class="mb-0">Modifier Dr. {{ doctor.user.get_full_name }}</h5>
         </div>
@@ -99,10 +99,10 @@
             {% endif %}
 
             <div class="d-flex gap-2 justify-content-end">
-              <a href="{% url 'doctors:admin_list' %}" class="btn btn-outline-secondary">
+              <a href="{% url 'doctors:admin_list' %}" class="btn btn-outline">
                 <i class="bi bi-arrow-left me-1"></i>Annuler
               </a>
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-mb-primary">
                 <i class="bi bi-check-lg me-1"></i>Enregistrer les modifications
               </button>
             </div>
