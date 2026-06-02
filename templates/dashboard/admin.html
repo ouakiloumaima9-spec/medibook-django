@@ -1,16 +1,96 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2 class="mb-4">Tableau de bord administrateur</h2>
-<div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="stat-card"><div class="stat-label">Patients</div><div class="stat-value">{{ total_patients }}</div></div></div>
-    <div class="col-md-3"><div class="stat-card"><div class="stat-label">Médecins actifs</div><div class="stat-value">{{ active_doctors }}</div></div></div>
-    <div class="col-md-3"><div class="stat-card"><div class="stat-label">Médecins total</div><div class="stat-value">{{ total_doctors }}</div></div></div>
-    <div class="col-md-3"><div class="stat-card"><div class="stat-label">RDV total</div><div class="stat-value">{{ total_appointments }}</div></div></div>
-</div>
-<div class="row g-4">
-    <div class="col-lg-6"><div class="mb-card"><h5>Rendez-vous par statut</h5>{% for row in by_status %}<div class="d-flex justify-content-between border-bottom py-2"><span>{{ row.status }}</span><strong>{{ row.c }}</strong></div>{% empty %}<p class="text-muted">Aucune donnée.</p>{% endfor %}</div></div>
-    <div class="col-lg-6"><div class="mb-card"><h5>Spécialités les plus demandées</h5>{% for row in by_specialty %}<div class="d-flex justify-content-between border-bottom py-2"><span>{{ row.specialty__name|default:"Non définie" }}</span><strong>{{ row.c }}</strong></div>{% empty %}<p class="text-muted">Aucune donnée.</p>{% endfor %}</div></div>
-    <div class="col-lg-6"><div class="mb-card"><h5>Médecins les plus sollicités</h5>{% for doctor in top_doctors %}<div class="d-flex justify-content-between border-bottom py-2"><span>{{ doctor }}</span><strong>{{ doctor.c }}</strong></div>{% empty %}<p class="text-muted">Aucune donnée.</p>{% endfor %}</div></div>
-    <div class="col-lg-6"><div class="mb-card"><h5>Dernières réservations</h5>{% include 'appointments/_appointment_table.html' with appointments=latest_appointments compact=True %}</div></div>
+<div class="container-fluid py-4">
+
+  <!-- Titre + action rapide -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-primary mb-0">
+      <i class="bi bi-speedometer2 me-2"></i>Tableau de bord administrateur
+    </h2>
+    <a href="{% url 'doctors:admin_list' %}" class="btn btn-primary">
+      <i class="bi bi-people me-1"></i>Gérer les médecins
+    </a>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="stat-label">Patients</div>
+        <div class="stat-value">{{ total_patients }}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="stat-label">Médecins actifs</div>
+        <div class="stat-value">{{ active_doctors }}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="stat-label">Médecins total</div>
+        <div class="stat-value">{{ total_doctors }}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="stat-label">RDV total</div>
+        <div class="stat-value">{{ total_appointments }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="mb-card">
+        <h5>Rendez-vous par statut</h5>
+        {% for row in by_status %}
+          <div class="d-flex justify-content-between border-bottom py-2">
+            <span>{{ row.status }}</span>
+            <strong>{{ row.c }}</strong>
+          </div>
+        {% empty %}
+          <p class="text-muted">Aucune donnée.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="mb-card">
+        <h5>Spécialités les plus demandées</h5>
+        {% for row in by_specialty %}
+          <div class="d-flex justify-content-between border-bottom py-2">
+            <span>{{ row.specialty__name|default:"Non définie" }}</span>
+            <strong>{{ row.c }}</strong>
+          </div>
+        {% empty %}
+          <p class="text-muted">Aucune donnée.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="mb-card">
+        <h5>Médecins les plus sollicités</h5>
+        {% for doctor in top_doctors %}
+          <div class="d-flex justify-content-between border-bottom py-2">
+            <span>{{ doctor }}</span>
+            <strong>{{ doctor.c }}</strong>
+          </div>
+        {% empty %}
+          <p class="text-muted">Aucune donnée.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="mb-card">
+        <h5>Dernières réservations</h5>
+        {% include 'appointments/_appointment_table.html' with appointments=latest_appointments compact=True %}
+      </div>
+    </div>
+  </div>
+
 </div>
 {% endblock %}

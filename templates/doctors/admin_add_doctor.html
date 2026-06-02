@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Ajouter un médecin — MediBook{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Fil d'Ariane -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'doctors:admin_list' %}">Gestion des médecins</a></li>
+      <li class="breadcrumb-item active">Ajouter un médecin</li>
+    </ol>
+  </nav>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
+          <i class="bi bi-person-plus-fill fs-5"></i>
+          <h5 class="mb-0">Ajouter un nouveau médecin</h5>
+        </div>
+
+        <div class="card-body p-4">
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Section compte -->
+            <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">
+              <i class="bi bi-person me-1"></i> Informations du compte
+            </h6>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                  <div class="text-danger small mt-1">{{ form.first_name.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                  <div class="text-danger small mt-1">{{ form.last_name.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.username.label }}</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                  <div class="text-danger small mt-1">{{ form.username.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.email.label }}</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                  <div class="text-danger small mt-1">{{ form.email.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.phone.label }}</label>
+                {{ form.phone }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.password.label }}</label>
+                {{ form.password }}
+                <div class="form-text">{{ form.password.help_text }}</div>
+                {% if form.password.errors %}
+                  <div class="text-danger small mt-1">{{ form.password.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.password_confirm.label }}</label>
+                {{ form.password_confirm }}
+                {% if form.password_confirm.errors %}
+                  <div class="text-danger small mt-1">{{ form.password_confirm.errors }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Section profil professionnel -->
+            <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">
+              <i class="bi bi-briefcase-medical me-1"></i> Profil professionnel
+            </h6>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.specialties.label }}</label>
+                {{ form.specialties }}
+                <div class="form-text">{{ form.specialties.help_text }}</div>
+                {% if form.specialties.errors %}
+                  <div class="text-danger small mt-1">{{ form.specialties.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.license_number.label }}</label>
+                {{ form.license_number }}
+                {% if form.license_number.errors %}
+                  <div class="text-danger small mt-1">{{ form.license_number.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold">{{ form.bio.label }}</label>
+                {{ form.bio }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">{{ form.years_of_experience.label }}</label>
+                {{ form.years_of_experience }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">{{ form.consultation_fee.label }}</label>
+                <div class="input-group">
+                  {{ form.consultation_fee }}
+                  <span class="input-group-text">MAD</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">{{ form.city.label }}</label>
+                {{ form.city }}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold">{{ form.office_address.label }}</label>
+                {{ form.office_address }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.languages.label }}</label>
+                {{ form.languages }}
+              </div>
+            </div>
+
+            <!-- Erreurs non liées aux champs -->
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <div class="d-flex gap-2 justify-content-end">
+              <a href="{% url 'doctors:admin_list' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Annuler
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-person-check me-1"></i>Créer le médecin
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
