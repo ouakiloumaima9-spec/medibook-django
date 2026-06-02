@@ -7,7 +7,7 @@
 
   <nav aria-label="breadcrumb" class="mb-3">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
       <li class="breadcrumb-item"><a href="{% url 'doctors:admin_list' %}">Gestion des médecins</a></li>
       <li class="breadcrumb-item active">Modifier Dr. {{ doctor.user.get_full_name }}</li>
     </ol>
