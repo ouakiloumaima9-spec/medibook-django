@@ -16,8 +16,6 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: medibook_test
-          MYSQL_USER: medibook_user
-          MYSQL_PASSWORD: medibook_pass
         ports:
           - 3306:3306
         options: >-
@@ -32,8 +30,8 @@ jobs:
       ALLOWED_HOSTS: localhost,127.0.0.1
       DB_ENGINE: django.db.backends.mysql
       DB_NAME: medibook_test
-      DB_USER: medibook_user
-      DB_PASSWORD: medibook_pass
+      DB_USER: root
+      DB_PASSWORD: root
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
       CSRF_TRUSTED_ORIGINS: http://localhost
